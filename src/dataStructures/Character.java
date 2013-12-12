@@ -1,86 +1,99 @@
 package dataStructures;
 
-public class Character {
-	
-	int characterId;
-	String characterName;
-	int corporationId;
-	String corporationName;
-	int allianceId;
-	String allianceName;
-	int factionId;
-	String factionName;
-	double securityStatus;
-	
-	public int getCharacterId(){
+import java.util.Comparator;
+
+public class Character implements Comparable<Character>, Comparator<Character> {
+
+	private int characterId;
+	private String characterName;
+	private int corporationId;
+	private String corporationName;
+	private int allianceId;
+	private String allianceName;
+	private int factionId;
+	private String factionName;
+	private double securityStatus;
+
+	public int getCharacterId() {
 		return characterId;
 	}
-	
-	public void setCharacterId(int characterId){
+
+	public void setCharacterId(int characterId) {
 		this.characterId = characterId;
 	}
-	
-	public String getCharacterName(){
+
+	public String getCharacterName() {
 		return characterName;
 	}
-	
-	public void setCharacterName(String characterName){
+
+	public void setCharacterName(String characterName) {
 		this.characterName = characterName;
 	}
-	
-	public int getCorporationId(){
+
+	public int getCorporationId() {
 		return corporationId;
 	}
-	
-	public void setCorporationId(int corporationId){
+
+	public void setCorporationId(int corporationId) {
 		this.corporationId = corporationId;
 	}
-	
-	public String getCorporationName(){
+
+	public String getCorporationName() {
 		return corporationName;
 	}
-	
-	public void setCorporationName(String corporationName){
+
+	public void setCorporationName(String corporationName) {
 		this.corporationName = corporationName;
 	}
-	
-	public int getAllianceId(){
+
+	public int getAllianceId() {
 		return allianceId;
 	}
-	
-	public void setAllianceId(int allianceId){
+
+	public void setAllianceId(int allianceId) {
 		this.allianceId = allianceId;
 	}
-	
-	public String getAllianceName(){
+
+	public String getAllianceName() {
 		return allianceName;
 	}
-	
-	public void setAllianceName(String allianceName){
+
+	public void setAllianceName(String allianceName) {
 		this.allianceName = allianceName;
 	}
-	
-	public int getFactionId(){
+
+	public int getFactionId() {
 		return factionId;
 	}
-	
-	public void setFactionId(int factionId){
+
+	public void setFactionId(int factionId) {
 		this.factionId = factionId;
 	}
-	
-	public String getFactionName(){
+
+	public String getFactionName() {
 		return factionName;
 	}
-	
-	public void setFactionName(String factionName){
+
+	public void setFactionName(String factionName) {
 		this.factionName = factionName;
 	}
-	
-	public double getSecurityStatus(){
+
+	public double getSecurityStatus() {
 		return securityStatus;
 	}
-	
-	public void setSecurityStatus(double securityStatus){
+
+	public void setSecurityStatus(double securityStatus) {
 		this.securityStatus = securityStatus;
+	}
+
+	@Override
+	public int compareTo(Character other) {
+		return this.characterName.compareTo(other.getCharacterName());
+	}
+
+	@Override
+	public int compare(Character charA, Character charB) {
+		return charA.getCharacterName().compareToIgnoreCase(
+				charB.getCharacterName());
 	}
 }
