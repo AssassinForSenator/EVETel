@@ -38,7 +38,7 @@ public class Eve {
 		InputSource data;
 
 		data = Download
-				.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
+				.getFromHTTPS("https://api.eveonline.com/eve/CharacterName.xml.aspx?ids="
 						+ id);
 
 		return XMLParser.getID(data).getIS().get(id);
@@ -62,7 +62,7 @@ public class Eve {
 		}
 
 		data = Download
-				.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
+				.getFromHTTPS("https://api.eveonline.com/eve/CharacterName.xml.aspx?ids="
 						+ characters);
 
 		return XMLParser.getID(data).getIS();
