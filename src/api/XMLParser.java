@@ -16,7 +16,6 @@ import dataStructures.Character;
 import dataStructures.Kill;
 import dataStructures.SIIS;
 import dataStructures.ShipAndChar;
-import dataStructures.StringInt;
 
 public class XMLParser {
 
@@ -304,7 +303,6 @@ public class XMLParser {
 
 			DefaultHandler handler = new DefaultHandler() {
 
-				StringInt nameAndId;
 				boolean isAllianceList = false;
 				String tmpString;
 				int tmpInt;
@@ -336,22 +334,22 @@ public class XMLParser {
 						for (int i = 0; i < attributes.getLength(); i++) {
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"name")) {
-								nameAndId.setString(attributes.getValue(i));
+								tmpString = attributes.getValue(i);
 							}
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"CharacterID")) {
-								nameAndId.setInteger(Integer
-										.parseInt(attributes.getValue(i)));
+								tmpInt = Integer
+										.parseInt(attributes.getValue(i));
 							}
 
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"typeName")) {
-								nameAndId.setString(attributes.getValue(i));
+								tmpString = attributes.getValue(i);
 							}
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"typeID")) {
-								nameAndId.setInteger(Integer
-										.parseInt(attributes.getValue(i)));
+								tmpInt = Integer
+										.parseInt(attributes.getValue(i));
 							}
 
 							if (attributes.getLocalName(i).equalsIgnoreCase(
@@ -373,7 +371,6 @@ public class XMLParser {
 					}
 
 					if (qName.equalsIgnoreCase("ROW") && isAllianceList) {
-						nameAndId = new StringInt();
 						for (int i = 0; i < attributes.getLength(); i++) {
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"name")) {
