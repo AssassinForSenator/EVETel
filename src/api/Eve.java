@@ -10,11 +10,13 @@ import dataStructures.StringInt;
 
 
 public class Eve {
-	public static ArrayList<StringInt> getCharacterID(ArrayList<String> name){
+	private static int maxAPIRequest = 230;
+	
+	public static ArrayList<StringInt> getCharacterID(ArrayList<String> name){ 
 		InputSource data;
 		String characters = "";
 		
-		if(name.size() == 0){
+		if(name.size() == 0 || name.size() > maxAPIRequest){
 			return null;
 		}
 		
@@ -42,7 +44,7 @@ public class Eve {
 		InputSource data;
 		String corpList = "";
 		
-		if(name.size() == 0){
+		if(name.size() == 0 || name.size() > maxAPIRequest){
 			return null;
 		}
 		
@@ -70,7 +72,7 @@ public class Eve {
 		InputSource data;
 		String allianceList = "";
 		
-		if(name.size() == 0){
+		if(name.size() == 0 || name.size() > maxAPIRequest){
 			return null;
 		}
 		
@@ -98,7 +100,7 @@ public class Eve {
 		InputSource data;
 		String systemList = "";
 		
-		if(ids.size() == 0){
+		if(ids.size() == 0 || ids.size() > maxAPIRequest){
 			return null;
 		}
 		
@@ -126,7 +128,7 @@ public class Eve {
 		InputSource data;
 		String idList = "";
 		
-		if(id.size() == 0){
+		if(id.size() == 0 || id.size() > maxAPIRequest){
 			return null;
 		}
 		

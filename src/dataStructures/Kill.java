@@ -11,7 +11,7 @@ public class Kill {
 	ShipAndChar victim;
 	ArrayList<ShipAndChar> attackers;
 	
-	public boolean checkParticipant(String Participant){
+	public boolean checkParticipant(String Participant){  //TODO: Clean up
 		if(victim.getCharacter().getCharacterName().equalsIgnoreCase(Participant)){
 			return true;
 		}

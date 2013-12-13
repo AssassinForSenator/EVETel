@@ -54,7 +54,7 @@ public class Stats {
 		return output;
 	}
 	
-	public static ArrayList<StringInt> getShipTypes(ArrayList<Kill> Kills, String name){
+	public static ArrayList<StringInt> getShipTypes(ArrayList<Kill> Kills, String name){  //TODO: Clean up code
 		ArrayList<StringInt> output = new ArrayList<StringInt>(); // the output result (Name, Number of occurance)
 		ArrayList<int[]> shipStats = new ArrayList<int[]>(); // (ID, number of occurance)
 		ArrayList<Integer> shipTypeList = new ArrayList<Integer>(); // list of Ship id's
@@ -139,7 +139,7 @@ public class Stats {
 		
 		return output;
 	}
-	public static ArrayList<StringInt> getWeaponTypes(ArrayList<Kill> Kills, String name){
+	public static ArrayList<StringInt> getWeaponTypes(ArrayList<Kill> Kills, String name){//TODO: Clean up code
 		ArrayList<StringInt> output = new ArrayList<StringInt>(); // the output result (Name, Number of occurance)
 		ArrayList<int[]> weaponStats = new ArrayList<int[]>(); // (ID, number of occurance)
 		ArrayList<Integer> weaponTypeList = new ArrayList<Integer>(); // list of weapon id's
@@ -207,7 +207,7 @@ public class Stats {
 		
 		return output;
 	}
-	public static ArrayList<StringInt> getSystems(ArrayList<Kill> Kills){
+	public static ArrayList<StringInt> getSystems(ArrayList<Kill> Kills){//TODO: Clean up code
 		ArrayList<StringInt> output = new ArrayList<StringInt>(); // the output result (Name, Number of occurance)
 		ArrayList<int[]> systemStats = new ArrayList<int[]>(); // (ID, number of occurance)
 		ArrayList<Integer> systemTypeList = new ArrayList<Integer>(); // list of system id's

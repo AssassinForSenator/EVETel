@@ -42,7 +42,7 @@ public class Download {
 			//	result += line;
 			//}
 		} catch (Exception e){
-			e.printStackTrace();
+			e.printStackTrace();  //TODO: ignore 500 errors
 			return null;
 		}
 		

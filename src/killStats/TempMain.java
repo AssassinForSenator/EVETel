@@ -18,12 +18,12 @@ public class TempMain {
 		@SuppressWarnings("unused")
 		StartFrame form = new StartFrame();
 		
-		ArrayList<Kill> Kills = KillBoard.getKillMails(1142939290);
+		ArrayList<Kill> Kills = KillBoard.getKillMails(538316455);
 		
 		System.out.println("Downloaded a total of:" + Kills.size() + " of killmails");
 		
-		weaponTest(Kills, "Pendulum of Doom");
-		shipTest(Kills, "Pendulum of Doom");
+		weaponTest(Kills, "The Rising Stars Academy");
+		shipTest(Kills, "The Rising Stars Academy");
 		systemTest(Kills);
 		
 		timeZoneTest(Kills);
