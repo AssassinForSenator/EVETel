@@ -1,6 +1,9 @@
 package killStats;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.TreeMap;
 
 import dataStructures.Kill;
 import dataStructures.ShipAndChar;
@@ -66,83 +69,95 @@ public class Stats {
 		return output;
 	}
 
-	public static ArrayList<StringInt> getShipTypes(ArrayList<Kill> Kills, String name){  //TODO: Clean up code
-		ArrayList<StringInt> output = new ArrayList<StringInt>(); // the output result (Name, Number of occurance)
-		ArrayList<int[]> shipStats = new ArrayList<int[]>(); // (ID, number of occurance)
-		ArrayList<Integer> shipTypeList = new ArrayList<Integer>(); // list of Ship id's
-		ArrayList<StringInt> shipID = new ArrayList<StringInt>(); // from the API (Name, ID
+	public static TreeMap<String, Integer> getShipTypes(ArrayList<Kill> Kills,
+			String name) { // TODO: Clean up code
+		ArrayList<StringInt> output = new ArrayList<StringInt>(); // the output
+																	// result
+																	// (Name,
+																	// Number of
+																	// occurance)
+		ArrayList<int[]> shipStats = new ArrayList<int[]>(); // (ID, number of
+																// occurance)
+		ArrayList<Integer> shipTypeList = new ArrayList<Integer>(); // list of
+																	// Ship id's
+		ArrayList<StringInt> shipID = new ArrayList<StringInt>(); // from the
+																	// API
+																	// (Name, ID
 		StringInt ship; // a single ship
 		int id; // a single ID
-		
-		for(Kill k : Kills){
-			if(k.getVictim().findAttribute(name){
-				
+
+		for (Kill k : Kills) {
+			if (k.getVictim().findAttribute(name)) {
+
 				boolean found = false;
 				id = k.getVictim().getShipId();
-				
-				for(int[] i : shipStats){
-					if(i[0] == id){
+
+				for (int[] i : shipStats) {
+					if (i[0] == id) {
 						i[1] = i[1] + 1;
 						found = true;
 					}
 				}
-				if(!found){
-					shipStats.add(new int[] { id, 1});
+				if (!found) {
+					shipStats.add(new int[] { id, 1 });
 				}
 			}
-			if(k.getAttackers() != null){
-				for(ShipAndChar attacker : k.getAttackers()){
-					if(attacker.getCharacter().findAttribute(name){
-					
+			if (k.getAttackers() != null) {
+				for (ShipAndChar attacker : k.getAttackers()) {
+					if (attacker.getCharacter().findAttribute(name)) {
+
 						boolean found = false;
 						id = attacker.getShipId();
-					
-						for(int[] i : shipStats){
-							if(i[0] == id){
+
+						for (int[] i : shipStats) {
+							if (i[0] == id) {
 								i[1] = i[1] + 1;
 								found = true;
 							}
 						}
-						if(!found){
-							shipStats.add(new int[] { id, 1});
+						if (!found) {
+							shipStats.add(new int[] { id, 1 });
 						}
 					}
-				}	
+				}
 			}
-		}	
-				
-		for(int[] i : shipStats){
+		}
+
+		for (int[] i : shipStats) {
 			shipTypeList.add(i[0]);
 		}
-		
-		if(shipTypeList.size() < 220){
+
+		if (shipTypeList.size() < 220) {
 			shipID = api.Eve.getItemID(shipTypeList);
 		} else {
-			shipID = api.Eve.getItemID(new ArrayList<Integer>(shipTypeList.subList(0, 220)));
-			shipTypeList.remove(new ArrayList<Integer>(shipTypeList.subList(0, 220)));
-			while(shipTypeList.size() > 0){
-				ArrayList<Integer> currentList = new ArrayList<Integer>(shipTypeList.subList(0, min(shipTypeList.size(),220)));
+			shipID = api.Eve.getItemID(new ArrayList<Integer>(shipTypeList
+					.subList(0, 220)));
+			shipTypeList.remove(new ArrayList<Integer>(shipTypeList.subList(0,
+					220)));
+			while (shipTypeList.size() > 0) {
+				ArrayList<Integer> currentList = new ArrayList<Integer>(
+						shipTypeList.subList(0, min(shipTypeList.size(), 220)));
 				shipTypeList.removeAll(currentList);
 				shipID.addAll(api.Eve.getItemID(currentList));
 			}
-			//System.out.println("Warning: ship lookup overloaded!");
-			//return null;
+			// System.out.println("Warning: ship lookup overloaded!");
+			// return null;
 		}
-		
-		for(StringInt i : shipID){
-			for(int[] j :shipStats){
-				if(i.getInteger() == j[0]){
+
+		for (StringInt i : shipID) {
+			for (int[] j : shipStats) {
+				if (i.getInteger() == j[0]) {
 					ship = new StringInt();
 					ship.setString(i.getString());
 					ship.setInteger(j[1]);
-					
+
 					output.add(ship);
 				}
 			}
 		}
-		
+
 		Collections.sort(output);
-		
+
 		return output;
 	}
 

@@ -48,4 +48,7 @@ public class ShipAndChar {
 		this.finalBlow = finalBlow;
 	}
 
+	public boolean findAttribute(String attribute) {
+		return character.findAttribute(attribute);
+	}
 }
