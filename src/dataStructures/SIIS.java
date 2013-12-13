@@ -1,4 +1,12 @@
 package dataStructures;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.TreeMap;
 
 /**
@@ -9,7 +17,9 @@ import java.util.TreeMap;
  * 
  */
 
-public class SIIS {
+public class SIIS implements Serializable {
+
+	private static final long serialVersionUID = 2377953583710351404L;
 	private TreeMap<String, Integer> SI;
 	private TreeMap<Integer, String> IS;
 
@@ -48,6 +58,36 @@ public class SIIS {
 
 	public void put(int i, String s) {
 		IS.put(i, s);
+	}
+
+	public void serializeFile(String filename) {
+		try {
+			FileOutputStream file = new FileOutputStream(filename);
+			ObjectOutputStream o = new ObjectOutputStream(file);
+			o.writeObject(this);
+			o.close();
+		} catch (IOException e) {
+			System.err.println(e);
+		}
+	}
+
+	public int size() {
+		return SI.size();
+	}
+
+	public static SIIS deSerializeFile(File filename) {
+		try {
+			FileInputStream file = new FileInputStream(filename);
+			ObjectInputStream o = new ObjectInputStream(file);
+			SIIS tmp = (SIIS) o.readObject();
+			o.close();
+			return tmp;
+		} catch (IOException e) {
+			System.err.println(e);
+		} catch (ClassNotFoundException e) {
+			System.err.println(e);
+		}
+		return null;
 	}
 
 }
