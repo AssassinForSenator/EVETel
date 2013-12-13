@@ -125,7 +125,7 @@ public class StartFrame extends JFrame {
 			String character = txtCharId.getText(); // Changed due to found name to ID conversion.
 			String participant = txtParticipant.getText();
 			
-			ArrayList<Kill> List = killStats.Stats.compaireCharacter(api.KillBoard.getKillMails(api.Eve.getEntityID(character)), participant);
+			ArrayList<Kill> List = killStats.Stats.compairEntityKill(api.KillBoard.getKillMails(api.Eve.getEntityID(character)), participant);
 			System.out.println(List.size());
 		}
 

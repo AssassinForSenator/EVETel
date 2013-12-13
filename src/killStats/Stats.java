@@ -2,12 +2,10 @@ package killStats;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.TreeMap;
 
 import dataStructures.Kill;
 import dataStructures.ShipAndChar;
-import dataStructures.StringInt;
 
 public class Stats {
 
@@ -39,9 +37,8 @@ public class Stats {
 		return output;
 	}
 
-	public static TreeMap<String, Integer> getShipTypes(ArrayList<Kill> Kills,
-			String name) { // TODO: Clean up code
-		TreeMap<Integer, String> output = new TreeMap<Integer, String>(); // the output
+	public static TreeMap<String, Integer> getShipTypes(ArrayList<Kill> Kills, String name) {
+		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the output
 																	// result
 																	// (Name,
 																	// Number of
@@ -53,7 +50,6 @@ public class Stats {
 		TreeMap<Integer, String> shipID = new TreeMap<Integer, String>(); // from the
 																	// API
 																	// (Name, ID
-		StringInt ship; // a single ship
 		int id; // a single ID
 
 		for (Kill k : Kills) {
@@ -108,32 +104,21 @@ public class Stats {
 				ArrayList<Integer> currentList = new ArrayList<Integer>(
 						shipTypeList.subList(0, min(shipTypeList.size(), 220)));
 				shipTypeList.removeAll(currentList);
-				shipID.addAll(api.Eve.getItemName(currentList));
+				shipID.putAll(api.Eve.getItemName(currentList));
 			}
 			// System.out.println("Warning: ship lookup overloaded!");
 			// return null;
 		}
 
-		for (StringInt i : shipID) {
-			for (int[] j : shipStats) {
-				if (i.getInteger() == j[0]) {
-					ship = new StringInt();
-					ship.setString(i.getString());
-					ship.setInteger(j[1]);
-
-					output.add(ship);
-				}
-			}
+		for (int[] j : shipStats) {
+			output.put(shipID.get(j[0]), j[1]);	
 		}
-
-		Collections.sort(output);
 
 		return output;
 	}
 
-	public static ArrayList<StringInt> getWeaponTypes(ArrayList<Kill> Kills,
-			String name) {// TODO: Clean up code
-		ArrayList<StringInt> output = new ArrayList<StringInt>(); // the output
+	public static TreeMap<String, Integer> getWeaponTypes(ArrayList<Kill> Kills, String name) {
+		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the output
 																	// result
 																	// (Name,
 																	// Number of
@@ -143,36 +128,29 @@ public class Stats {
 		ArrayList<Integer> weaponTypeList = new ArrayList<Integer>(); // list of
 																		// weapon
 																		// id's
-		ArrayList<StringInt> weaponID = new ArrayList<StringInt>(); // from the
+		TreeMap<Integer, String> weaponID = new TreeMap<Integer, String>(); // from the
 																	// API
 																	// (Name,
 																	// ID)
-		StringInt weapon; // a single weapon
 		int id; // a single ID
 
 		for (Kill k : Kills) {
-			if (k.getAttackers() != null) {
+			if (k.getAttackers() != null) {  // there can be no attackers on a KM
 				for (ShipAndChar attacker : k.getAttackers()) {
-					if (attacker.getCharacter().getCharacterName()
-							.equalsIgnoreCase(name)
-							|| attacker.getCharacter().getCorporationName()
-									.equalsIgnoreCase(name)
-							|| attacker.getCharacter().getAllianceName()
-									.equalsIgnoreCase(name)
-							|| attacker.getCharacter().getFactionName()
-									.equalsIgnoreCase(name)) {
-
+					if (attacker.getCharacter().findAttribute(name)) {
 						boolean found = false;
 						id = attacker.getWeaponId();
-
-						for (int[] i : weaponStats) {
-							if (i[0] == id) {
-								i[1] = i[1] + 1;
-								found = true;
+						
+						if(id != attacker.getShipId()){ // make sure not to say that a thrasher is a weapon, even if you and i know it is...
+							for (int[] i : weaponStats) {
+								if (i[0] == id) {
+									i[1] = i[1] + 1;
+									found = true;
+								}
 							}
-						}
-						if (!found) {
-							weaponStats.add(new int[] { id, 1 });
+							if (!found) {
+								weaponStats.add(new int[] { id, 1 });
+							}
 						}
 					}
 				}
@@ -184,9 +162,9 @@ public class Stats {
 		}
 
 		if (weaponTypeList.size() < 220) {
-			weaponID = api.Eve.getItemID(weaponTypeList);
+			weaponID = api.Eve.getItemName(weaponTypeList);
 		} else {
-			weaponID = api.Eve.getItemID(new ArrayList<Integer>(weaponTypeList
+			weaponID = api.Eve.getItemName(new ArrayList<Integer>(weaponTypeList
 					.subList(0, 220)));
 			weaponTypeList.remove(new ArrayList<Integer>(weaponTypeList
 					.subList(0, 220)));
@@ -195,34 +173,21 @@ public class Stats {
 						weaponTypeList.subList(0,
 								min(weaponTypeList.size(), 220)));
 				weaponTypeList.removeAll(currentList);
-				weaponID.addAll(api.Eve.getItemID(currentList));
+				weaponID.putAll(api.Eve.getItemName(currentList));
 			}
 			// System.out.println("Warning: weapon lookup overloaded!");
 			// return null;
 		}
 
-		for (StringInt i : weaponID) {
-			for (int[] j : weaponStats) {
-				if (i.getInteger() == j[0]) {
-					weapon = new StringInt();
-					weapon.setString(i.getString());
-					weapon.setInteger(j[1]);
-
-					output.add(weapon);
-				}
-			}
+		for (int[] j : weaponStats) {
+			output.put(weaponID.get(j[0]), j[1]);	
 		}
-
-		Collections.sort(output);
 
 		return output;
 	}
 
-	public static ArrayList<StringInt> getSystems(ArrayList<Kill> Kills) {// TODO:
-																			// Clean
-																			// up
-																			// code
-		ArrayList<StringInt> output = new ArrayList<StringInt>(); // the output
+	public static TreeMap<String, Integer> getSystems(ArrayList<Kill> Kills) {
+		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the output
 																	// result
 																	// (Name,
 																	// Number of
@@ -232,11 +197,10 @@ public class Stats {
 		ArrayList<Integer> systemTypeList = new ArrayList<Integer>(); // list of
 																		// system
 																		// id's
-		ArrayList<StringInt> systemID = new ArrayList<StringInt>(); // from the
+		TreeMap<Integer, String> systemID = new TreeMap<Integer, String>(); // from the
 																	// API
 																	// (Name,
 																	// ID)
-		StringInt system; // a single system
 		int id; // a single ID
 
 		for (Kill k : Kills) {
@@ -259,9 +223,9 @@ public class Stats {
 		}
 
 		if (systemTypeList.size() < 220) {
-			systemID = api.Eve.getSystemName(systemTypeList);
+			systemID = api.Eve.getEntityName(systemTypeList);
 		} else {
-			systemID = api.Eve.getSystemName(new ArrayList<Integer>(
+			systemID = api.Eve.getEntityName(new ArrayList<Integer>(
 					systemTypeList.subList(0, 220)));
 			systemTypeList.remove(new ArrayList<Integer>(systemTypeList
 					.subList(0, 220)));
@@ -270,25 +234,15 @@ public class Stats {
 						systemTypeList.subList(0,
 								min(systemTypeList.size(), 220)));
 				systemTypeList.removeAll(currentList);
-				systemID.addAll(api.Eve.getSystemName(currentList));
+				systemID.putAll(api.Eve.getEntityName(currentList));
 			}
 			// System.out.println("Warning: system lookup overloaded!");
 			// return null;
 		}
 
-		for (StringInt i : systemID) {
-			for (int[] j : systemStats) {
-				if (i.getInteger() == j[0]) {
-					system = new StringInt();
-					system.setString(i.getString());
-					system.setInteger(j[1]);
-
-					output.add(system);
-				}
-			}
+		for (int[] j : systemStats) {
+			output.put(systemID.get(j[0]), j[1]);	
 		}
-
-		Collections.sort(output);
 
 		return output;
 	}
