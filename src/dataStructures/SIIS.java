@@ -1,5 +1,4 @@
 package dataStructures;
-
 import java.util.TreeMap;
 
 /**
@@ -13,6 +12,19 @@ import java.util.TreeMap;
 public class SIIS {
 	private TreeMap<String, Integer> SI;
 	private TreeMap<Integer, String> IS;
+
+	public SIIS() {
+		SI = new TreeMap<String, Integer>();
+		IS = new TreeMap<Integer, String>();
+	}
+
+	public String get(int i) {
+		return IS.get(i);
+	}
+
+	public int get(String s) {
+		return SI.get(s);
+	}
 
 	public TreeMap<String, Integer> getSI() {
 		return SI;
@@ -28,6 +40,14 @@ public class SIIS {
 
 	public void setIS(TreeMap<Integer, String> iS) {
 		IS = iS;
+	}
+
+	public void put(String s, int i) {
+		SI.put(s, i);
+	}
+
+	public void put(int i, String s) {
+		IS.put(i, s);
 	}
 
 }

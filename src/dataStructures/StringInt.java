@@ -1,5 +1,6 @@
 package dataStructures;
 
+@Deprecated
 public class StringInt implements Comparable<StringInt> {
 	private int integer;
 	private String string;
