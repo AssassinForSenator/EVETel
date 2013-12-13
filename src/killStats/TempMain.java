@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import api.KillBoard;
+import dataStructures.ItemIdList;
 import dataStructures.Kill;
 import dataStructures.StringInt;
 
@@ -30,7 +31,8 @@ public class TempMain {
 		 */
 		ArrayList<Kill> kills = KillBoard.getKillMailsFromFile("exoapi.xml");
 		System.out.println(kills.size());
-		weaponTest(kills, "The Rising Stars Academy");
+		// weaponTest(kills, "The Rising Stars Academy");
+		System.out.println(ItemIdList.lookup(58));
 	}
 
 	private static void weaponTest(ArrayList<Kill> kills, String name) {

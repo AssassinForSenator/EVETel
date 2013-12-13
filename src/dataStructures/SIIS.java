@@ -1,4 +1,5 @@
 package dataStructures;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +26,14 @@ public class SIIS implements Serializable {
 	public SIIS() {
 		SI = new TreeMap<String, Integer>();
 		IS = new TreeMap<Integer, String>();
+	}
+
+	public boolean containsKey(int key) {
+		return IS.containsKey(key);
+	}
+
+	public boolean containsKey(String key) {
+		return SI.containsKey(key);
 	}
 
 	public String get(int i) {

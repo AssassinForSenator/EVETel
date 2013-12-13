@@ -34,11 +34,21 @@ public class Eve {
 		return XMLParser.getID(data).getSI();
 	}
 
-	public static String getEntityName(int id) {
+	public static int getEntityID(String name) {
 		InputSource data;
 
 		data = Download
 				.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
+						+ name);
+
+		return XMLParser.getID(data).getSI().get(name);
+	}
+
+	public static String getEntityName(int id) {
+		InputSource data;
+
+		data = Download
+				.getFromHTTPS("https://api.eveonline.com/eve/CharacterName.xml.aspx?ids="
 						+ id);
 
 		return XMLParser.getID(data).getIS().get(id);
@@ -62,20 +72,10 @@ public class Eve {
 		}
 
 		data = Download
-				.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
+				.getFromHTTPS("https://api.eveonline.com/eve/CharacterName.xml.aspx?ids="
 						+ characters);
 
 		return XMLParser.getID(data).getIS();
-	}
-
-	public static int getEntityID(String name) {
-		InputSource data;
-
-		data = Download
-				.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
-						+ name);
-
-		return XMLParser.getID(data).getSI().get(name);
 	}
 
 	public static TreeMap<Integer, String> getItemName(ArrayList<Integer> id) {
