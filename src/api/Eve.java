@@ -34,6 +34,40 @@ public class Eve {
 		return XMLParser.getID(data).getSI();
 	}
 
+	public static String getEntityName(int id) {
+		InputSource data;
+
+		data = Download
+				.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
+						+ id);
+
+		return XMLParser.getID(data).getIS().get(id);
+	}
+
+	public static TreeMap<Integer, String> getEntityName(ArrayList<Integer> id) {
+		InputSource data;
+		StringBuilder characters = new StringBuilder();
+
+		if (id.size() == 0 || id.size() > maxAPIRequest) {
+			return null;
+		}
+
+		for (int i : id) {
+			if (characters.length() == 0) {
+				characters.append(i);
+			} else {
+				characters.append(',');
+				characters.append(i);
+			}
+		}
+
+		data = Download
+				.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
+						+ characters);
+
+		return XMLParser.getID(data).getIS();
+	}
+
 	public static int getEntityID(String name) {
 		InputSource data;
 

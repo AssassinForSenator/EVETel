@@ -47,4 +47,5 @@ public class ShipAndChar {
 	public void setFinalBlow(boolean finalBlow) {
 		this.finalBlow = finalBlow;
 	}
+
 }

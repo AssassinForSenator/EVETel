@@ -86,6 +86,14 @@ public class Character implements Comparable<Character>, Comparator<Character> {
 		this.securityStatus = securityStatus;
 	}
 
+	public boolean findAttribute(String attribute) {
+		return attribute.equalsIgnoreCase(characterName)
+				|| attribute.equalsIgnoreCase(corporationName)
+				|| attribute.equalsIgnoreCase(allianceName)
+				|| attribute.equalsIgnoreCase(factionName);
+
+	}
+
 	@Override
 	public int compareTo(Character other) {
 		return this.characterName.compareTo(other.getCharacterName());
