@@ -71,6 +71,14 @@ public class SIIS implements Serializable {
 		}
 	}
 
+	public boolean containsKey(String key) {
+		return SI.containsKey(key);
+	}
+
+	public boolean containsKey(int key) {
+		return IS.containsKey(key);
+	}
+
 	public int size() {
 		return SI.size();
 	}
