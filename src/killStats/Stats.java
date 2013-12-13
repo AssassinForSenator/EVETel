@@ -11,12 +11,11 @@ import dataStructures.StringInt;
 
 public class Stats {
 
-	public static ArrayList<Kill> compaireCharacter(ArrayList<Kill> Kills,
-			String character) {
+	public static ArrayList<Kill> compaireEntityLoss(ArrayList<Kill> Kills, String name) {
 		ArrayList<Kill> output = new ArrayList<Kill>();
-
+		
 		for (Kill k : Kills) {
-			if (k.checkParticipant(character)) {
+			if (k.getVictim().findAttribute(name)) {
 				output.add(k);
 			}
 		}
@@ -24,42 +23,13 @@ public class Stats {
 		return output;
 	}
 
-	public static ArrayList<Kill> compairCorp(ArrayList<Kill> Kills, String corp) {
+	public static ArrayList<Kill> compairEntityKill(ArrayList<Kill> Kills, String name) {
 		ArrayList<Kill> output = new ArrayList<Kill>();
 
 		for (Kill k : Kills) {
-			if (k.getVictim().getCharacter().getCorporationName()
-					.equalsIgnoreCase(corp)) {
-				output.add(k);
-			} else {
-				for (ShipAndChar attacker : k.getAttackers()) { // TODO: fix no
-																// attacker
-																// possibilty
-					if (attacker.getCharacter().getCorporationName()
-							.equalsIgnoreCase(corp)) {
-						output.add(k);
-					}
-				}
-			}
-		}
-
-		return output;
-	}
-
-	public static ArrayList<Kill> compairAlliance(ArrayList<Kill> Kills,
-			String alliance) {
-		ArrayList<Kill> output = new ArrayList<Kill>();
-
-		for (Kill k : Kills) {
-			if (k.getVictim().getCharacter().getAllianceName()
-					.equalsIgnoreCase(alliance)) {
-				output.add(k);
-			} else {
-				for (ShipAndChar attacker : k.getAttackers()) { // TODO: fix no
-																// attacker
-																// possibilty
-					if (attacker.getCharacter().getAllianceName()
-							.equalsIgnoreCase(alliance)) {
+			if(k.getAttackers().size() != 0){
+				for (ShipAndChar attacker : k.getAttackers()) { 
+					if (attacker.getCharacter().findAttribute(name)) {
 						output.add(k);
 					}
 				}
@@ -71,7 +41,7 @@ public class Stats {
 
 	public static TreeMap<String, Integer> getShipTypes(ArrayList<Kill> Kills,
 			String name) { // TODO: Clean up code
-		ArrayList<StringInt> output = new ArrayList<StringInt>(); // the output
+		TreeMap<Integer, String> output = new TreeMap<Integer, String>(); // the output
 																	// result
 																	// (Name,
 																	// Number of
@@ -80,7 +50,7 @@ public class Stats {
 																// occurance)
 		ArrayList<Integer> shipTypeList = new ArrayList<Integer>(); // list of
 																	// Ship id's
-		ArrayList<StringInt> shipID = new ArrayList<StringInt>(); // from the
+		TreeMap<Integer, String> shipID = new TreeMap<Integer, String>(); // from the
 																	// API
 																	// (Name, ID
 		StringInt ship; // a single ship
@@ -128,9 +98,9 @@ public class Stats {
 		}
 
 		if (shipTypeList.size() < 220) {
-			shipID = api.Eve.getItemID(shipTypeList);
+			shipID = api.Eve.getItemName(shipTypeList);
 		} else {
-			shipID = api.Eve.getItemID(new ArrayList<Integer>(shipTypeList
+			shipID = api.Eve.getItemName(new ArrayList<Integer>(shipTypeList
 					.subList(0, 220)));
 			shipTypeList.remove(new ArrayList<Integer>(shipTypeList.subList(0,
 					220)));
@@ -138,7 +108,7 @@ public class Stats {
 				ArrayList<Integer> currentList = new ArrayList<Integer>(
 						shipTypeList.subList(0, min(shipTypeList.size(), 220)));
 				shipTypeList.removeAll(currentList);
-				shipID.addAll(api.Eve.getItemID(currentList));
+				shipID.addAll(api.Eve.getItemName(currentList));
 			}
 			// System.out.println("Warning: ship lookup overloaded!");
 			// return null;
