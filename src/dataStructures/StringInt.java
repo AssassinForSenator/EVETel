@@ -1,5 +1,10 @@
 package dataStructures;
 
+/**
+ * 
+ * @author ash
+ * @deprecated Use class <api.SIIS> instead.
+ */
 public class StringInt implements Comparable<StringInt> {
 	private int integer;
 	private String string;
