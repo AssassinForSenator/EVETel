@@ -1,19 +1,18 @@
 package killStats;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import api.KillBoard;
 import dataStructures.ItemIdList;
 import dataStructures.Kill;
+import dataStructures.MapSorter;
 import dataStructures.Pilot;
 import dataStructures.ShipAndChar;
 
@@ -54,14 +53,8 @@ public class ExoMain {
 		}
 		System.out.println(resultSet.size());
 
-		List list = new LinkedList(occurence.entrySet());
-		Collections.sort(list, new Comparator() {
-			@Override
-			public int compare(Object o1, Object o2) {
-				return ((Comparable) ((Map.Entry) (o1)).getValue())
-						.compareTo(((Map.Entry) (o2)).getValue());
-			}
-		});
+		LinkedList<Entry<Pilot, Integer>> list = MapSorter
+				.sortByValue(occurence);
 
 		Map sortedMap = new LinkedHashMap();
 		for (Iterator it = list.iterator(); it.hasNext();) {
