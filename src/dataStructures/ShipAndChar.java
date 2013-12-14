@@ -2,18 +2,18 @@ package dataStructures;
 
 public class ShipAndChar {
 
-	private Character character;
+	private Pilot pilot;
 	private int shipId;
 	private int damageDone;
 	private int weaponId;
 	private boolean finalBlow;
 
-	public Character getCharacter() {
-		return character;
+	public Pilot getPilot() {
+		return pilot;
 	}
 
-	public void setCharacter(Character character) {
-		this.character = character;
+	public void setPilot(Pilot pilot) {
+		this.pilot = pilot;
 	}
 
 	public int getShipId() {
@@ -49,6 +49,6 @@ public class ShipAndChar {
 	}
 
 	public boolean findAttribute(String attribute) {
-		return character.findAttribute(attribute);
+		return pilot.findAttribute(attribute);
 	}
 }

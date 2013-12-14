@@ -12,8 +12,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import dataStructures.Character;
 import dataStructures.Kill;
+import dataStructures.Pilot;
 import dataStructures.SIIS;
 import dataStructures.ShipAndChar;
 
@@ -38,7 +38,7 @@ public class XMLParser {
 
 				ArrayList<ShipAndChar> attackers;
 				Kill singleKill;
-				Character singleCharacter;
+				Pilot singleCharacter;
 				ShipAndChar singleShipAndChar;
 
 				@Override
@@ -94,7 +94,7 @@ public class XMLParser {
 
 					if (qName.equalsIgnoreCase("VICTIM")) {
 						singleShipAndChar = new ShipAndChar();
-						singleCharacter = new Character();
+						singleCharacter = new Pilot();
 						for (int i = 0; i < attributes.getLength(); i++) {
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"characterID")) {
@@ -143,7 +143,7 @@ public class XMLParser {
 										.parseInt(attributes.getValue(i)));
 							}
 
-							singleShipAndChar.setCharacter(singleCharacter);
+							singleShipAndChar.setPilot(singleCharacter);
 							// System.out.println("	" +
 							// attributes.getLocalName(i) + " : " +
 							// attributes.getValue(i));
@@ -152,7 +152,7 @@ public class XMLParser {
 
 					if (qName.equalsIgnoreCase("ROW") && attackerList) {
 						singleShipAndChar = new ShipAndChar();
-						singleCharacter = new Character();
+						singleCharacter = new Pilot();
 						for (int i = 0; i < attributes.getLength(); i++) {
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"characterID")) {
@@ -224,7 +224,7 @@ public class XMLParser {
 								}
 							}
 
-							singleShipAndChar.setCharacter(singleCharacter);
+							singleShipAndChar.setPilot(singleCharacter);
 							// System.out.println("		" +
 							// attributes.getLocalName(i) + " : " +
 							// attributes.getValue(i));
@@ -338,8 +338,8 @@ public class XMLParser {
 							}
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"CharacterID")) {
-								tmpInt = Integer
-										.parseInt(attributes.getValue(i));
+								tmpInt = Integer.parseInt(attributes
+										.getValue(i));
 							}
 
 							if (attributes.getLocalName(i).equalsIgnoreCase(
@@ -348,8 +348,8 @@ public class XMLParser {
 							}
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"typeID")) {
-								tmpInt = Integer
-										.parseInt(attributes.getValue(i));
+								tmpInt = Integer.parseInt(attributes
+										.getValue(i));
 							}
 
 							if (attributes.getLocalName(i).equalsIgnoreCase(
