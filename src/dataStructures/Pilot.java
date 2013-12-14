@@ -4,8 +4,8 @@ import java.util.Comparator;
 
 public class Pilot implements Comparable<Pilot>, Comparator<Pilot> {
 
-	private int characterId;
-	private String characterName;
+	private int pilotId;
+	private String pilotName;
 	private int corporationId;
 	private String corporationName;
 	private int allianceId;
@@ -14,20 +14,20 @@ public class Pilot implements Comparable<Pilot>, Comparator<Pilot> {
 	private String factionName;
 	private double securityStatus;
 
-	public int getCharacterId() {
-		return characterId;
+	public int getPilotId() {
+		return pilotId;
 	}
 
-	public void setCharacterId(int characterId) {
-		this.characterId = characterId;
+	public void setPilotId(int pilotId) {
+		this.pilotId = pilotId;
 	}
 
-	public String getCharacterName() {
-		return characterName;
+	public String getPilotName() {
+		return pilotName;
 	}
 
-	public void setCharacterName(String characterName) {
-		this.characterName = characterName;
+	public void setPilotName(String pilotName) {
+		this.pilotName = pilotName;
 	}
 
 	public int getCorporationId() {
@@ -87,7 +87,7 @@ public class Pilot implements Comparable<Pilot>, Comparator<Pilot> {
 	}
 
 	public boolean findAttribute(String attribute) {
-		return attribute.equalsIgnoreCase(characterName)
+		return attribute.equalsIgnoreCase(pilotName)
 				|| attribute.equalsIgnoreCase(corporationName)
 				|| attribute.equalsIgnoreCase(allianceName)
 				|| attribute.equalsIgnoreCase(factionName);
@@ -95,25 +95,25 @@ public class Pilot implements Comparable<Pilot>, Comparator<Pilot> {
 
 	@Override
 	public String toString() {
-		return characterName;
+		return pilotName;
 	}
 
 	@Override
 	public int compareTo(Pilot other) {
-		return this.characterName.compareTo(other.getCharacterName());
+		return this.pilotName.compareTo(other.getPilotName());
 	}
 
 	@Override
 	public int compare(Pilot charA, Pilot charB) {
-		return charA.getCharacterName().compareToIgnoreCase(
-				charB.getCharacterName());
+		return charA.getPilotName().compareToIgnoreCase(
+				charB.getPilotName());
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + characterId;
+		result = prime * result + pilotId;
 		return result;
 	}
 
@@ -129,7 +129,7 @@ public class Pilot implements Comparable<Pilot>, Comparator<Pilot> {
 			return false;
 		}
 		Pilot other = (Pilot) obj;
-		if (characterId != other.characterId) {
+		if (pilotId != other.pilotId) {
 			return false;
 		}
 		return true;

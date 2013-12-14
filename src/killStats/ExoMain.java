@@ -21,22 +21,22 @@ public class ExoMain {
 
 	public static void main(String[] args) {
 		// TODO cleanup of this neutral alt analysis
-		String dude = "lubomir penev";
+		String dude = "gavjack bunk";
 		ItemIdList.getInstance();
 		ArrayList<Kill> killboard = new ArrayList<Kill>();
-		killboard = KillBoard.getKillMailsFromFile("lubomir.xml");
+		killboard = KillBoard.getKillMailsFromFile("gavjack.xml");
 		LinkedHashSet<Pilot> resultSet = new LinkedHashSet<Pilot>();
 		TreeMap<Pilot, Integer> occurence = new TreeMap<Pilot, Integer>();
 
 		for (Kill K : killboard) {
-			if (K.getVictim().getPilot().getCharacterName()
+			if (K.getVictim().getPilot().getPilotName()
 					.equalsIgnoreCase(dude)) {
 				continue;
 			} else {
 				ArrayList<Pilot> attackers = new ArrayList<Pilot>();
 
 				for (ShipAndChar att : K.getAttackers()) {
-					if (att.getPilot().getCharacterName()
+					if (att.getPilot().getPilotName()
 							.equalsIgnoreCase(dude)) {
 						continue;
 					}

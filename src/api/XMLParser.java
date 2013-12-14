@@ -98,12 +98,12 @@ public class XMLParser {
 						for (int i = 0; i < attributes.getLength(); i++) {
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"characterID")) {
-								singleCharacter.setCharacterId(Integer
+								singleCharacter.setPilotId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"characterName")) {
-								singleCharacter.setCharacterName(attributes
+								singleCharacter.setPilotName(attributes
 										.getValue(i));
 							}
 							if (attributes.getLocalName(i).equalsIgnoreCase(
@@ -156,12 +156,12 @@ public class XMLParser {
 						for (int i = 0; i < attributes.getLength(); i++) {
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"characterID")) {
-								singleCharacter.setCharacterId(Integer
+								singleCharacter.setPilotId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
 							if (attributes.getLocalName(i).equalsIgnoreCase(
 									"characterName")) {
-								singleCharacter.setCharacterName(attributes
+								singleCharacter.setPilotName(attributes
 										.getValue(i));
 							}
 							if (attributes.getLocalName(i).equalsIgnoreCase(
