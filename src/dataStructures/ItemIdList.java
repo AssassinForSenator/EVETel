@@ -79,4 +79,27 @@ public class ItemIdList {
 		idSIIS.serializeFile("data.dump");
 	}
 
+	public static int lookup(String id) {
+		if (idSIIS.containsKey(id)) {
+			return idSIIS.get(id);
+		} else {
+			int tmp = api.Eve.getEntityID(id);
+			idSIIS.put(id, tmp);
+			return tmp;
+		}
+	}
+
+	public static String lookup(int id) {
+		if (idSIIS.containsKey(id)) {
+			return idSIIS.get(id);
+		} else {
+			String tmp = api.Eve.getEntityName(id);
+			if (tmp == null) {
+				return null;
+			}
+			idSIIS.put(id, tmp);
+			return tmp;
+		}
+	}
+
 }
