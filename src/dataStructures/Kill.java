@@ -13,13 +13,13 @@ public class Kill {
 	ArrayList<ShipAndChar> attackers;
 
 	public boolean checkParticipant(String Participant) { // TODO: Clean up
-		if (victim.getPilot().getCharacterName().equalsIgnoreCase(Participant)) {
+		if (victim.getPilot().getPilotName().equalsIgnoreCase(Participant)) {
 			return true;
 		}
 		if (attackers != null) {
 			for (ShipAndChar attacker : attackers) {
 				try {
-					if (attacker.getPilot().getCharacterName()
+					if (attacker.getPilot().getPilotName()
 							.equalsIgnoreCase(Participant)) {
 						return true;
 					}
