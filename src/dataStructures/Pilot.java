@@ -2,7 +2,7 @@ package dataStructures;
 
 import java.util.Comparator;
 
-public class Character implements Comparable<Character>, Comparator<Character> {
+public class Pilot implements Comparable<Pilot>, Comparator<Pilot> {
 
 	private int characterId;
 	private String characterName;
@@ -91,17 +91,48 @@ public class Character implements Comparable<Character>, Comparator<Character> {
 				|| attribute.equalsIgnoreCase(corporationName)
 				|| attribute.equalsIgnoreCase(allianceName)
 				|| attribute.equalsIgnoreCase(factionName);
-
 	}
 
 	@Override
-	public int compareTo(Character other) {
+	public String toString() {
+		return characterName;
+	}
+
+	@Override
+	public int compareTo(Pilot other) {
 		return this.characterName.compareTo(other.getCharacterName());
 	}
 
 	@Override
-	public int compare(Character charA, Character charB) {
+	public int compare(Pilot charA, Pilot charB) {
 		return charA.getCharacterName().compareToIgnoreCase(
 				charB.getCharacterName());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + characterId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Pilot other = (Pilot) obj;
+		if (characterId != other.characterId) {
+			return false;
+		}
+		return true;
+	}
+
 }

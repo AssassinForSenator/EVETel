@@ -9,9 +9,10 @@ import dataStructures.ShipAndChar;
 
 public class Stats {
 
-	public static ArrayList<Kill> compaireEntityLoss(ArrayList<Kill> Kills, String name) {
+	public static ArrayList<Kill> compaireEntityLoss(ArrayList<Kill> Kills,
+			String name) {
 		ArrayList<Kill> output = new ArrayList<Kill>();
-		
+
 		for (Kill k : Kills) {
 			if (k.getVictim().findAttribute(name)) {
 				output.add(k);
@@ -21,13 +22,14 @@ public class Stats {
 		return output;
 	}
 
-	public static ArrayList<Kill> compairEntityKill(ArrayList<Kill> Kills, String name) {
+	public static ArrayList<Kill> compairEntityKill(ArrayList<Kill> Kills,
+			String name) {
 		ArrayList<Kill> output = new ArrayList<Kill>();
 
 		for (Kill k : Kills) {
-			if(k.getAttackers().size() != 0){
-				for (ShipAndChar attacker : k.getAttackers()) { 
-					if (attacker.getCharacter().findAttribute(name)) {
+			if (k.getAttackers().size() != 0) {
+				for (ShipAndChar attacker : k.getAttackers()) {
+					if (attacker.getPilot().findAttribute(name)) {
 						output.add(k);
 					}
 				}
@@ -37,19 +39,22 @@ public class Stats {
 		return output;
 	}
 
-	public static TreeMap<String, Integer> getShipTypes(ArrayList<Kill> Kills, String name) {
-		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the output
-																	// result
-																	// (Name,
-																	// Number of
-																	// occurance)
+	public static TreeMap<String, Integer> getShipTypes(ArrayList<Kill> Kills,
+			String name) {
+		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the
+																			// output
+		// result
+		// (Name,
+		// Number of
+		// occurance)
 		ArrayList<int[]> shipStats = new ArrayList<int[]>(); // (ID, number of
 																// occurance)
 		ArrayList<Integer> shipTypeList = new ArrayList<Integer>(); // list of
 																	// Ship id's
-		TreeMap<Integer, String> shipID = new TreeMap<Integer, String>(); // from the
-																	// API
-																	// (Name, ID
+		TreeMap<Integer, String> shipID = new TreeMap<Integer, String>(); // from
+																			// the
+		// API
+		// (Name, ID
 		int id; // a single ID
 
 		for (Kill k : Kills) {
@@ -70,7 +75,7 @@ public class Stats {
 			}
 			if (k.getAttackers() != null) {
 				for (ShipAndChar attacker : k.getAttackers()) {
-					if (attacker.getCharacter().findAttribute(name)) {
+					if (attacker.getPilot().findAttribute(name)) {
 
 						boolean found = false;
 						id = attacker.getShipId();
@@ -111,37 +116,45 @@ public class Stats {
 		}
 
 		for (int[] j : shipStats) {
-			output.put(shipID.get(j[0]), j[1]);	
+			output.put(shipID.get(j[0]), j[1]);
 		}
 
 		return output;
 	}
 
-	public static TreeMap<String, Integer> getWeaponTypes(ArrayList<Kill> Kills, String name) {
-		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the output
-																	// result
-																	// (Name,
-																	// Number of
-																	// occurance)
+	public static TreeMap<String, Integer> getWeaponTypes(
+			ArrayList<Kill> Kills, String name) {
+		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the
+																			// output
+		// result
+		// (Name,
+		// Number of
+		// occurance)
 		ArrayList<int[]> weaponStats = new ArrayList<int[]>(); // (ID, number of
 																// occurance)
 		ArrayList<Integer> weaponTypeList = new ArrayList<Integer>(); // list of
 																		// weapon
 																		// id's
-		TreeMap<Integer, String> weaponID = new TreeMap<Integer, String>(); // from the
-																	// API
-																	// (Name,
-																	// ID)
+		TreeMap<Integer, String> weaponID = new TreeMap<Integer, String>(); // from
+																			// the
+		// API
+		// (Name,
+		// ID)
 		int id; // a single ID
 
 		for (Kill k : Kills) {
-			if (k.getAttackers() != null) {  // there can be no attackers on a KM
+			if (k.getAttackers() != null) { // there can be no attackers on a KM
 				for (ShipAndChar attacker : k.getAttackers()) {
-					if (attacker.getCharacter().findAttribute(name)) {
+					if (attacker.getPilot().findAttribute(name)) {
 						boolean found = false;
 						id = attacker.getWeaponId();
-						
-						if(id != attacker.getShipId()){ // make sure not to say that a thrasher is a weapon, even if you and i know it is...
+
+						if (id != attacker.getShipId()) { // make sure not to
+															// say that a
+															// thrasher is a
+															// weapon, even if
+															// you and i know it
+															// is...
 							for (int[] i : weaponStats) {
 								if (i[0] == id) {
 									i[1] = i[1] + 1;
@@ -164,8 +177,8 @@ public class Stats {
 		if (weaponTypeList.size() < 220) {
 			weaponID = api.Eve.getItemName(weaponTypeList);
 		} else {
-			weaponID = api.Eve.getItemName(new ArrayList<Integer>(weaponTypeList
-					.subList(0, 220)));
+			weaponID = api.Eve.getItemName(new ArrayList<Integer>(
+					weaponTypeList.subList(0, 220)));
 			weaponTypeList.remove(new ArrayList<Integer>(weaponTypeList
 					.subList(0, 220)));
 			while (weaponTypeList.size() > 0) {
@@ -180,27 +193,29 @@ public class Stats {
 		}
 
 		for (int[] j : weaponStats) {
-			output.put(weaponID.get(j[0]), j[1]);	
+			output.put(weaponID.get(j[0]), j[1]);
 		}
 
 		return output;
 	}
 
 	public static TreeMap<String, Integer> getSystems(ArrayList<Kill> Kills) {
-		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the output
-																	// result
-																	// (Name,
-																	// Number of
-																	// occurance)
+		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the
+																			// output
+		// result
+		// (Name,
+		// Number of
+		// occurance)
 		ArrayList<int[]> systemStats = new ArrayList<int[]>(); // (ID, number of
 																// occurance)
 		ArrayList<Integer> systemTypeList = new ArrayList<Integer>(); // list of
 																		// system
 																		// id's
-		TreeMap<Integer, String> systemID = new TreeMap<Integer, String>(); // from the
-																	// API
-																	// (Name,
-																	// ID)
+		TreeMap<Integer, String> systemID = new TreeMap<Integer, String>(); // from
+																			// the
+		// API
+		// (Name,
+		// ID)
 		int id; // a single ID
 
 		for (Kill k : Kills) {
@@ -241,7 +256,7 @@ public class Stats {
 		}
 
 		for (int[] j : systemStats) {
-			output.put(systemID.get(j[0]), j[1]);	
+			output.put(systemID.get(j[0]), j[1]);
 		}
 
 		return output;

@@ -76,7 +76,7 @@ public class TempMain {
 		latestLoss.setKillTime(new GregorianCalendar(0, 0, 0, 0, 0, 0));
 
 		for (Kill k : commonList) {
-			if (k.getVictim().getCharacter().getCharacterName()
+			if (k.getVictim().getPilot().getCharacterName()
 					.equalsIgnoreCase(name)
 					&& k.getKillTime().after(latestLoss.getKillTime())) {
 				latestLoss = k;
@@ -95,7 +95,7 @@ public class TempMain {
 		latestLoss.setKillTime(new GregorianCalendar(0, 0, 0, 0, 0, 0));
 
 		for (Kill k : commonList) {
-			if (k.getVictim().getCharacter().getCharacterName()
+			if (k.getVictim().getPilot().getCharacterName()
 					.equalsIgnoreCase(name)
 					&& k.getKillTime().after(latestLoss.getKillTime())) {
 				latestLoss = k;
