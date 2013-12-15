@@ -75,7 +75,16 @@ public class Kill {
 		return attackers;
 	}
 
+	public ArrayList<Pilot> gettAttackingPilots() {
+		ArrayList<Pilot> tmp = new ArrayList<Pilot>();
+		for (ShipAndChar S : attackers) {
+			tmp.add(S.getPilot());
+		}
+		return tmp;
+	}
+
 	public void setAttackers(ArrayList<ShipAndChar> attackers) {
 		this.attackers = attackers;
 	}
+
 }
