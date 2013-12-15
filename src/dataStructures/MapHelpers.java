@@ -10,7 +10,6 @@ public class MapHelpers {
 
 	public static <K, V> LinkedList<Map.Entry<K, V>> sortByValueLinkedListAsc(
 			Map<K, V> unsortedMap) {
-
 		LinkedList<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(
 				unsortedMap.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
