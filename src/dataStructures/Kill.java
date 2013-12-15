@@ -13,13 +13,13 @@ public class Kill {
 	ArrayList<ShipAndChar> attackers;
 
 	public boolean checkParticipant(String Participant) { // TODO: Clean up
-		if (victim.getPilot().getPilotName().equalsIgnoreCase(Participant)) {
+		if (victim.getPilot().getCharacterName().equalsIgnoreCase(Participant)) {
 			return true;
 		}
 		if (attackers != null) {
 			for (ShipAndChar attacker : attackers) {
 				try {
-					if (attacker.getPilot().getPilotName()
+					if (attacker.getPilot().getCharacterName()
 							.equalsIgnoreCase(Participant)) {
 						return true;
 					}
@@ -75,7 +75,16 @@ public class Kill {
 		return attackers;
 	}
 
+	public ArrayList<Pilot> gettAttackingPilots() {
+		ArrayList<Pilot> tmp = new ArrayList<Pilot>();
+		for (ShipAndChar S : attackers) {
+			tmp.add(S.getPilot());
+		}
+		return tmp;
+	}
+
 	public void setAttackers(ArrayList<ShipAndChar> attackers) {
 		this.attackers = attackers;
 	}
+
 }
