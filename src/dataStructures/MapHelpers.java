@@ -5,8 +5,13 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public class MapHelpers {
+
+	private MapHelpers() {
+
+	}
 
 	public static <K, V> LinkedList<Map.Entry<K, V>> sortByValueLinkedListAsc(
 			Map<K, V> unsortedMap) {
@@ -34,6 +39,15 @@ public class MapHelpers {
 		for (Entry<K, V> E : list) {
 			System.out
 					.println("Key: " + E.getKey() + " Value: " + E.getValue());
+		}
+	}
+
+	public static <K> void incrementValue(TreeMap<K, Integer> map, K key) {
+		Integer count = map.get(key);
+		if (count == null) {
+			map.put(key, 1);
+		} else {
+			map.put(key, count + 1);
 		}
 	}
 }

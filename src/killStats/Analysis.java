@@ -1,10 +1,16 @@
 package killStats;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import dataStructures.ItemIdList;
 import dataStructures.Kill;
+import dataStructures.MapHelpers;
 import dataStructures.Pilot;
+import dataStructures.ShipAndChar;
 
 public class Analysis {
 
@@ -68,7 +74,12 @@ public class Analysis {
 	 */
 	public static TreeMap<Pilot, Integer> findMostFrequentAssistants(
 			ArrayList<Kill> killboard, String nameOfPilot) {
+
 		TreeMap<Pilot, Integer> occurrence = new TreeMap<Pilot, Integer>();
+
+		if (killboard.isEmpty()) {
+			return null;
+		}
 		for (Kill K : killboard) {
 			if (K.getVictim().getPilot().getCharacterName()
 					.equalsIgnoreCase(nameOfPilot)) {
@@ -76,7 +87,7 @@ public class Analysis {
 			} else {
 				ArrayList<Pilot> attackers = K.gettAttackingPilots();
 				for (Pilot P : attackers) { // excludes the pilot himself from
-											// the list of assitants, and some
+											// the list of assistants, and some
 											// faulty data like null values and
 											// empty pilotnames aka rats
 					if (P.getCharacterName().equalsIgnoreCase(nameOfPilot)
@@ -84,15 +95,79 @@ public class Analysis {
 							|| P.getCharacterName().equalsIgnoreCase("")) {
 						continue;
 					}
-					Integer count = occurrence.get(P);
-					if (count == null) {
-						occurrence.put(P, 1);
-					} else {
-						occurrence.put(P, count + 1);
-					}
+					MapHelpers.incrementValue(occurrence, P);
 				}
 			}
 		}
 		return occurrence;
 	}
+
+	/**
+	 * Counts ships on kb by occurence
+	 * 
+	 * @param killBoard
+	 *            SE
+	 * @param attribute
+	 *            name of the char/corp/alliance/faction you're looking for
+	 * @return treemap<int, int> representing shipid as key and occurrence as
+	 *         value
+	 */
+	public static TreeMap<Integer, Integer> getShiptypesIDOccurrence(
+			ArrayList<Kill> killBoard, String attribute) {
+
+		TreeMap<Integer, Integer> result = new TreeMap<Integer, Integer>();
+
+		if (killBoard.isEmpty()) {
+			return null;
+		}
+
+		for (Kill K : killBoard) {
+			if (K.getVictim().findAttribute(attribute)) {
+				Integer shipID = K.getVictim().getShipId();
+				MapHelpers.incrementValue(result, shipID);
+			}
+			ArrayList<ShipAndChar> attackers = K.getAttackers();
+			for (ShipAndChar SnC : attackers) {
+				if (SnC.findAttribute(attribute)) {
+					Integer shipID = SnC.getShipId();
+					MapHelpers.incrementValue(result, shipID);
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * piggybacks on IDOccurrence
+	 * 
+	 * @param killBoard
+	 *            SE
+	 * @param attribute
+	 *            see IDOcurrence
+	 * @return treemap<string, int>, string being the name of the pilot, value
+	 *         the #
+	 */
+	public static TreeMap<String, Integer> getShiptypesNameOccurrence(
+			ArrayList<Kill> killBoard, String attribute) {
+		ItemIdList.getInstance();
+		TreeMap<Integer, Integer> intermediary = getShiptypesIDOccurrence(
+				killBoard, attribute);
+		TreeMap<String, Integer> result = new TreeMap<String, Integer>();
+		Iterator<Map.Entry<Integer, Integer>> entries = intermediary.entrySet()
+				.iterator();
+		while (entries.hasNext()) {
+			Entry<Integer, Integer> tmpEntry = entries.next();
+			int key = tmpEntry.getKey();
+			int value = tmpEntry.getValue();
+			result.put(ItemIdList.lookup(key), value);
+		}
+		return result;
+	}
+
+	public static TreeMap<Integer, Integer> getWeaponIdOccurences(
+			ArrayList<Kill> killBoard, String attribute) {
+		// TODO
+		return null;
+	}
+
 }

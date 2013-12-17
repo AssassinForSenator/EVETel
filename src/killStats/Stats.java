@@ -9,6 +9,7 @@ import dataStructures.ShipAndChar;
 
 public class Stats {
 
+	// done n
 	public static ArrayList<Kill> compaireEntityLoss(ArrayList<Kill> Kills,
 			String name) {
 		ArrayList<Kill> output = new ArrayList<Kill>();
@@ -22,6 +23,7 @@ public class Stats {
 		return output;
 	}
 
+	// done n
 	public static ArrayList<Kill> compairEntityKill(ArrayList<Kill> Kills,
 			String name) {
 		ArrayList<Kill> output = new ArrayList<Kill>();
@@ -35,10 +37,10 @@ public class Stats {
 				}
 			}
 		}
-
 		return output;
 	}
 
+	//
 	public static TreeMap<String, Integer> getShipTypes(ArrayList<Kill> Kills,
 			String name) {
 		TreeMap<String, Integer> output = new TreeMap<String, Integer>(); // the

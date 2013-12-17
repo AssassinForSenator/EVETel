@@ -23,6 +23,7 @@ public class ItemIdList {
 		File datadump = new File("data.dump");
 		if (!datadump.exists()) {
 			parse();
+			// buildFromScratch();
 		} else {
 			idSIIS = SIIS.deSerializeFile(datadump);
 			System.out.println(idSIIS.size());
@@ -66,7 +67,8 @@ public class ItemIdList {
 					tmpString += token.nextToken();
 				}
 
-				System.out.println("id: " + tmpId + " " + "text:" + tmpString);
+				// System.out.println("id: " + tmpId + " " + "text:" +
+				// tmpString);
 				idSIIS.put(tmpId, tmpString);
 				idSIIS.put(tmpString, tmpId);
 			}
@@ -79,12 +81,20 @@ public class ItemIdList {
 		idSIIS.serializeFile("data.dump");
 	}
 
-	public static int lookup(String id) {
-		if (idSIIS.containsKey(id)) {
-			return idSIIS.get(id);
+	// in case of extreme emergency
+	private static void buildFromScratch() {
+		for (int i = 2; i <= 365994; i++) {
+			lookup(i);
+		}
+		save();
+	}
+
+	public static int lookup(String name) {
+		if (idSIIS.containsKey(name)) {
+			return idSIIS.get(name);
 		} else {
-			int tmp = api.Eve.getEntityID(id);
-			idSIIS.put(id, tmp);
+			int tmp = api.Eve.getItemId(name);
+			idSIIS.put(name, tmp);
 			return tmp;
 		}
 	}
@@ -93,13 +103,22 @@ public class ItemIdList {
 		if (idSIIS.containsKey(id)) {
 			return idSIIS.get(id);
 		} else {
-			String tmp = api.Eve.getEntityName(id);
+			String tmp = api.Eve.getItemName(id);
 			if (tmp == null) {
 				return null;
 			}
+			System.out.println("looked up id: " + id + " name: " + tmp);
 			idSIIS.put(id, tmp);
 			return tmp;
 		}
+	}
+
+	public static void put(String name, int id) {
+		idSIIS.put(name, id);
+	}
+
+	public static void put(int id, String name) {
+		idSIIS.put(id, name);
 	}
 
 }
