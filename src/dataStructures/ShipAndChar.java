@@ -1,5 +1,7 @@
 package dataStructures;
 
+import java.util.ArrayList;
+
 public class ShipAndChar {
 
 	private Pilot pilot;
@@ -50,5 +52,9 @@ public class ShipAndChar {
 
 	public boolean findAttribute(String attribute) {
 		return pilot.findAttribute(attribute);
+	}
+	
+	public boolean isShip(ArrayList<Integer> list){
+		return list.contains(shipId);
 	}
 }

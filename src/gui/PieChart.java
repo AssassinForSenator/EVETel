@@ -13,21 +13,39 @@ import javax.swing.JPanel;
 public class PieChart extends JPanel{
 	
 	Color[] optimalList = new Color[] { new Color(102,164,165), new Color(252,141,98), new Color(141,160,203), new Color(231,138,195), new Color(166,216,84), new Color(255,217,47)};
+	int n = 0;
+	boolean drawOther;
 	
-	public void paint (Graphics g) {
+	TreeMap<String, Integer> list;
+	TreeMap<Integer, String> output;
+	
+	public TreeMap<Integer, String> update(TreeMap<String, Integer> list, boolean drawOther){
+		this.list = list;
+		this.drawOther = drawOther;
+		paintComponent(getGraphics());
 		
+		return output;
 	}
 	
-	public void paint (Graphics g, TreeMap<String, Integer> list) {
+	@Override
+	protected void paintComponent(Graphics g) {
+		
+		super.paintComponent(g);
+		
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(getBackground());
-		g2d.fillRect(0, 0, getWidth(), getHeight());
-		
-		drawSegments(g2d, list);
+
+		if(list != null && list.size() > 0){
+			g2d.setColor(getBackground());
+			g2d.fillRect(0, 0, getWidth(), getHeight());
+			n = 1;
+			
+			output = drawSegments(g2d, list);
+		}
 	}
 	
-	private void drawSegments(Graphics2D g2d, TreeMap<String, Integer> list){
+	private TreeMap<Integer, String> drawSegments(Graphics2D g2d, TreeMap<String, Integer> list){
 		ArrayList<Map.Entry<String, Integer>> sortedList = new ArrayList<Map.Entry<String, Integer>>();
+		TreeMap<Integer, String> output = new TreeMap<Integer, String>();
 		
 		int i = 0;
 		int deg = 0;
@@ -50,7 +68,7 @@ public class PieChart extends JPanel{
 		for(Map.Entry<String, Integer> md : sortedList){
 			int x = md.getValue();
 			k = k + x;
-			if(deg < 340 && (double) x/total > 0.01d){
+			if(deg < 340 && (double) x/total > 0.01d || !drawOther){
 				int angle = (int) Math.round((double) x/total*360);
 				drawArc(g2d, optimalList[i%6], deg, angle);
 				deg = deg + angle;
@@ -66,21 +84,25 @@ public class PieChart extends JPanel{
 		for(Map.Entry<String, Integer> md : sortedList){
 			int x = md.getValue();
 			k = k + x;
-			if(deg < 340 && (double) x/total > 0.01d){
+			if(deg < 340 && (double) x/total > 0.01d || !drawOther){
 				int angle = (int) Math.round((double) x/total*360);
-				drawText(g2d, md.getKey(), deg, angle);
+				output.put(n, drawText(g2d, md.getKey(), deg, angle));
 				deg = deg + angle;
 			} else if(k == total){
 				drawText(g2d, "Other", deg, 360-deg);
 			}
 		}
 
-		
+		return output;
 	}
 	
-	private void drawText(Graphics2D g2d, String text, int startAngle, int angle){
+	private String drawText(Graphics2D g2d, String text, int startAngle, int angle){
+		StringBuilder output = new StringBuilder();
+		output.append(n + " : " + text);
+		
 		drawString(g2d, text, startAngle, angle);
-		drawValue(g2d, startAngle, angle);
+		output.append(" " + drawValue(g2d, text, startAngle, angle) + "%");	
+		return output.toString();
 	}
 	private void drawArc(Graphics2D g2d, Color c, int start, int amount){
 		g2d.setColor(c);
@@ -88,18 +110,29 @@ public class PieChart extends JPanel{
 	}
 	
 	private void drawString(Graphics2D g2d, String text, int startAngle, int angle){
-		g2d.setColor(Color.BLACK);
-		g2d.setFont(getFont().deriveFont(9.0f));
-		g2d.drawString(text, (float) Math.cos(Math.toRadians(-(angle/2 + startAngle) - 90))*80 + 140 - text.length()*2, (float) Math.sin(Math.toRadians(-(angle/2 + startAngle) - 90))*80 + 140);
+		double percent = (double) Math.round((double) angle/360*100*1000)/1000;
+		if(percent > 5 || text.equalsIgnoreCase("Other")){
+			g2d.setColor(Color.BLACK);
+			g2d.setFont(getFont().deriveFont(9.0f));
+			g2d.drawString(text, (float) Math.cos(Math.toRadians(-(angle/2 + startAngle) - 90))*80 + 140 - text.length()*2, (float) Math.sin(Math.toRadians(-(angle/2 + startAngle) - 90))*80 + 140);
+		} else {
+			g2d.setColor(Color.BLACK);
+			g2d.setFont(getFont().deriveFont(9.0f));
+			g2d.drawString(String.valueOf(n), (float) Math.cos(Math.toRadians(-(angle/2 + startAngle) - 90))*90 + 140, (float) Math.sin(Math.toRadians(-(angle/2 + startAngle) - 90))*90 + 140);
+			n++;
+		}
 	}
-	private void drawValue(Graphics2D g2d, int startAngle, int angle){
-		double percent = Math.round((double) angle/360*100);
-		if(percent > 5){
+	private double drawValue(Graphics2D g2d, String text0, int startAngle, int angle){
+		double percent = (double) Math.round((double) angle/360*100*1000)/1000;
+		if(percent > 5 || text0.equalsIgnoreCase("Other")){
 			String text = String.valueOf(percent) + "%";
 			g2d.setColor(Color.BLACK);
 			g2d.setFont(getFont().deriveFont(9.0f));
 			g2d.drawString(text, (float) Math.cos(Math.toRadians(-(angle/2 + startAngle) - 90))*80 + 140 - text.length()*2, (float) Math.sin(Math.toRadians(-(angle/2 + startAngle) - 90))*80 + 140 + 15);
+		} else {
+			return percent;
 		}
+		return 0;
 	}
 
 }
