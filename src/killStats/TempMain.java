@@ -1,5 +1,7 @@
 package killStats;
 
+import gui.DemoFrame;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
@@ -18,11 +20,13 @@ public class TempMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
-		ArrayList<Kill> Kills = KillBoard.getKillMailsFromFile("exoapi.xml");
+		DemoFrame form = new DemoFrame();
+		
+		
+		//ArrayList<Kill> Kills = KillBoard.getKillMailsFromFile("exoapi.xml");
 		// ArrayList<Kill> Kills = KillBoard.getKillMails(538316455);
 
-		System.out.println("Downloaded a total of:" + Kills.size()
+		/*System.out.println("Downloaded a total of:" + Kills.size()
 				+ " of killmails");
 
 		// weaponTest(Kills, "Exo Iljonen");
@@ -38,13 +42,13 @@ public class TempMain {
 		// System.out.println(kills.size());
 		// weaponTest(kills, "The Rising Stars Academy");
 
-		ItemIdList.getInstance();
+		ItemIdList.getInstance();*/
 	}
 
 	private static void weaponTest(ArrayList<Kill> kills, String name) {
 		TreeMap<String, Integer> weaponList = killStats.Stats.getWeaponTypes(
 				kills, name);
-
+		
 		System.out.println(entriesSortedByValues(weaponList) + " are " + name
 				+ "'s Favorit weapon!");
 	}
