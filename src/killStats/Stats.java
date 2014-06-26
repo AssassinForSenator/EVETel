@@ -19,7 +19,6 @@ public class Stats {
 				output.add(k);
 			}
 		}
-
 		return output;
 	}
 
