@@ -1,17 +1,18 @@
 package api;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.TreeMap;
-
-import org.xml.sax.InputSource;
 
 public class Eve {
 	private static int maxAPIRequest = 230;
 
 	public static TreeMap<String, Integer> getEntityID(ArrayList<String> name) {
-		InputSource data;
+		InputStream data = null;
 		StringBuilder characters = new StringBuilder();
 
 		if (name.size() == 0 || name.size() > maxAPIRequest) {
@@ -20,10 +21,20 @@ public class Eve {
 
 		for (String s : name) {
 			if (characters.length() == 0) {
-				characters.append(s);
+				try {
+					characters.append(URLEncoder.encode(s,"UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else {
 				characters.append(',');
-				characters.append(s);
+				try {
+					characters.append(URLEncoder.encode(s,"UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -35,7 +46,7 @@ public class Eve {
 	}
 
 	public static String getEntityName(int id) {
-		InputSource data;
+		InputStream data;
 
 		data = Download
 				.getFromHTTPS("https://api.eveonline.com/eve/CharacterName.xml.aspx?ids="
@@ -45,7 +56,7 @@ public class Eve {
 	}
 
 	public static TreeMap<Integer, String> getEntityName(ArrayList<Integer> id) {
-		InputSource data;
+		InputStream data;
 		StringBuilder characters = new StringBuilder();
 
 		if (id.size() == 0 || id.size() > maxAPIRequest) {
@@ -69,17 +80,22 @@ public class Eve {
 	}
 
 	public static int getEntityID(String name) {
-		InputSource data;
+		InputStream data = null;
 
-		data = Download
-				.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
-						+ name);
+		try {
+			data = Download
+					.getFromHTTPS("https://api.eveonline.com/eve/CharacterID.xml.aspx?names="
+							+ URLEncoder.encode(name.toString(),"UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return XMLParser.getID(data).getSI().get(name);
 	}
 
 	public static TreeMap<Integer, String> getItemName(ArrayList<Integer> id) {
-		InputSource data;
+		InputStream data;
 		StringBuilder idList = new StringBuilder();
 
 		if (id.size() == 0 || id.size() > maxAPIRequest) {
@@ -103,7 +119,7 @@ public class Eve {
 	}
 
 	public static String getItemName(int id) {
-		InputSource data;
+		InputStream data;
 
 		data = Download
 				.getFromHTTPS("https://api.eveonline.com/eve/TypeName.xml.aspx?ids="
@@ -113,7 +129,7 @@ public class Eve {
 	}
 
 	public static TreeMap<String, Integer> getItemID(ArrayList<String> id) {
-		InputSource data;
+		InputStream data;
 		StringBuilder idList = new StringBuilder();
 
 		if (id.size() == 0 || id.size() > maxAPIRequest) {
@@ -122,10 +138,20 @@ public class Eve {
 
 		for (String s : id) {
 			if (idList.length() == 0) {
-				idList.append(s);
+				try {
+					idList.append(URLEncoder.encode(s,"UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else {
 				idList.append(',');
-				idList.append(s);
+				try {
+					idList.append(URLEncoder.encode(s,"UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -137,18 +163,23 @@ public class Eve {
 	}
 
 	public static int getItemId(String name) {
-		InputSource data;
+		InputStream data = null;
 
-		data = Download
-				.getFromHTTPS("https://api.eveonline.com/eve/TypeName.xml.aspx?ids="
-						+ name);
+		try {
+			data = Download
+					.getFromHTTPS("https://api.eveonline.com/eve/TypeName.xml.aspx?ids="
+							+ URLEncoder.encode(name,"UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return XMLParser.getID(data).getSI().get(name);
 	}
 
 	public static boolean isCharacterID(int id) {
 
-		InputSource data;
+		InputStream data;
 		data = Download
 				.getFromHTTPS("https://api.eveonline.com/eve/CharacterInfo.xml.aspx?characterID="
 						+ id);
@@ -166,7 +197,7 @@ public class Eve {
 
 	public static boolean isAllianceID(int id) {
 		try {
-			InputSource data;
+			InputStream data;
 			String notCorp = "{\"info\":null,\"characters\":[]}";
 
 			data = Download
@@ -174,7 +205,7 @@ public class Eve {
 							+ id);
 
 			BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(data.getByteStream(), "UTF-8"));
+					new InputStreamReader(data, "UTF-8"));
 			String line = bufferedReader.readLine();
 
 			bufferedReader.close();
@@ -192,7 +223,7 @@ public class Eve {
 
 	public static boolean isCorporationID(int id) {
 		try {
-			InputSource data;
+			InputStream data;
 			String notCorp = "{\"info\":null,\"characters\":[]}";
 
 			data = Download
@@ -200,7 +231,7 @@ public class Eve {
 							+ id);
 
 			BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(data.getByteStream(), "UTF-8"));
+					new InputStreamReader(data, "UTF-8"));
 			String line = bufferedReader.readLine();
 
 			bufferedReader.close();

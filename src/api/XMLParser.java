@@ -1,14 +1,15 @@
 package api;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -21,12 +22,16 @@ public class XMLParser {
 
 	private static ArrayList<Kill> killList;
 	private static SIIS idMap;
+	
+	private static DatatypeFactory dataFactory;
 
-	public static ArrayList<Kill> Killboard(InputSource xmlStream) {
+	public static ArrayList<Kill> Killboard(InputStream xmlStream) {
 
 		try {
-
 			System.out.println("parsingXML...");
+			//Stopwatch t = new Stopwatch();
+			
+			dataFactory = DatatypeFactory.newInstance();
 
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			final SAXParser saxParser = factory.newSAXParser();
@@ -54,14 +59,14 @@ public class XMLParser {
 						killList = new ArrayList<Kill>();
 					}
 
-					if (qName.equalsIgnoreCase("ROWSET")
+					else if (qName.equalsIgnoreCase("ROWSET")
 							&& attributes.getValue(0).equalsIgnoreCase(
 									"ATTACKERS")) {
 						attackerList = true;
 						attackers = new ArrayList<ShipAndChar>();
 					}
 
-					if (qName.equalsIgnoreCase("ROW") && kmList
+					else if (qName.equalsIgnoreCase("ROW") && kmList
 							&& !attackerList) {
 						singleKill = new Kill();
 						for (int i = 0; i < attributes.getLength(); i++) {
@@ -70,17 +75,17 @@ public class XMLParser {
 								singleKill.setKillId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"solarSystemID")) {
 								singleKill.setSolarsysId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"moonID ")) {
 								singleKill.setMoonId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"killTime")) {
 								singleKill.setKillTime(convertToCalendar(
 										attributes.getValue(i),
@@ -92,7 +97,7 @@ public class XMLParser {
 						}
 					}
 
-					if (qName.equalsIgnoreCase("VICTIM")) {
+					else if (qName.equalsIgnoreCase("VICTIM")) {
 						singleShipAndChar = new ShipAndChar();
 						singleCharacter = new Pilot();
 						for (int i = 0; i < attributes.getLength(); i++) {
@@ -101,56 +106,57 @@ public class XMLParser {
 								singleCharacter.setCharacterId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"characterName")) {
 								singleCharacter.setCharacterName(attributes
 										.getValue(i));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"corporationID")) {
 								singleCharacter.setCorporationId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"corporationName")) {
 								singleCharacter.setCorporationName(attributes
 										.getValue(i));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"allianceID")) {
 								singleCharacter.setAllianceId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"allianceName")) {
 								singleCharacter.setAllianceName(attributes
 										.getValue(i));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"factionID")) {
 								singleCharacter.setFactionId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"factionName")) {
 								singleCharacter.setFactionName(attributes
 										.getValue(i));
 							}
 
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"shipTypeID")) {
 								singleShipAndChar.setShipId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
 
-							singleShipAndChar.setPilot(singleCharacter);
+							
 							// System.out.println("	" +
 							// attributes.getLocalName(i) + " : " +
 							// attributes.getValue(i));
 						}
+						singleShipAndChar.setPilot(singleCharacter);
 					}
 
-					if (qName.equalsIgnoreCase("ROW") && attackerList) {
+					else if (qName.equalsIgnoreCase("ROW") && attackerList) {
 						singleShipAndChar = new ShipAndChar();
 						singleCharacter = new Pilot();
 						for (int i = 0; i < attributes.getLength(); i++) {
@@ -159,63 +165,63 @@ public class XMLParser {
 								singleCharacter.setCharacterId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"characterName")) {
 								singleCharacter.setCharacterName(attributes
 										.getValue(i));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"corporationID")) {
 								singleCharacter.setCorporationId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"corporationName")) {
 								singleCharacter.setCorporationName(attributes
 										.getValue(i));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"allianceID")) {
 								singleCharacter.setAllianceId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"allianceName")) {
 								singleCharacter.setAllianceName(attributes
 										.getValue(i));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"factionID")) {
 								singleCharacter.setFactionId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"factionName")) {
 								singleCharacter.setFactionName(attributes
 										.getValue(i));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"securityStatus")) {
 								singleCharacter.setSecurityStatus(Double
 										.parseDouble(attributes.getValue(i)));
 							}
 
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"damageDone")) {
 								singleShipAndChar.setShipId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"weaponTypeID")) {
 								singleShipAndChar.setWeaponId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"shipTypeID")) {
 								singleShipAndChar.setShipId(Integer
 										.parseInt(attributes.getValue(i)));
 							}
-							if (attributes.getLocalName(i).equalsIgnoreCase(
+							else if (attributes.getLocalName(i).equalsIgnoreCase(
 									"finalBlow")) {
 								if (Integer.parseInt(attributes.getValue(i)) == 1) {
 									singleShipAndChar.setFinalBlow(true);
@@ -224,11 +230,12 @@ public class XMLParser {
 								}
 							}
 
-							singleShipAndChar.setPilot(singleCharacter);
+							
 							// System.out.println("		" +
 							// attributes.getLocalName(i) + " : " +
 							// attributes.getValue(i));
 						}
+						singleShipAndChar.setPilot(singleCharacter);
 					}
 
 					// System.out.println();
@@ -245,14 +252,14 @@ public class XMLParser {
 															// indicated
 						singleKill.setVictim(singleShipAndChar);
 					}
-					if (qName.equalsIgnoreCase("ROW") && !attackerList) { // is
+					else if (qName.equalsIgnoreCase("ROW") && !attackerList) { // is
 																			// this
 																			// a
 																			// kill?
 
 						killList.add(singleKill);
 					}
-					if (qName.equalsIgnoreCase("ROW") && attackerList) { // is
+					else if (qName.equalsIgnoreCase("ROW") && attackerList) { // is
 																			// this
 																			// a
 																			// attacker
@@ -261,7 +268,7 @@ public class XMLParser {
 																			// kill?
 						attackers.add(singleShipAndChar);
 					}
-					if (qName.equalsIgnoreCase("ROWSET") && attackerList) { // attackers
+					else if (qName.equalsIgnoreCase("ROWSET") && attackerList) { // attackers
 																			// are
 																			// all
 																			// listed
@@ -278,10 +285,12 @@ public class XMLParser {
 
 			};
 
-			saxParser.parse(xmlStream, handler);
+			saxParser.parse(new BufferedInputStream(xmlStream), handler);//xmlStream, handler);
+			
+			xmlStream.close();
 
 			System.out.println("XML Parsing Complete.");
-
+			//System.out.println("done in: " + t.elapsedTime());
 			return killList;
 
 		} catch (Exception e) {
@@ -292,7 +301,7 @@ public class XMLParser {
 
 	}
 
-	public static SIIS getID(InputSource xmlStream) {
+	public static SIIS getID(InputStream xmlStream) {
 
 		try {
 
@@ -421,24 +430,15 @@ public class XMLParser {
 	}
 
 	private static Calendar convertToCalendar(String value, int killId) {
-		Calendar output;
-		try {
-			int year = Integer.parseInt(value.substring(0, 4));
-			int month = Integer.parseInt(value.substring(5, 7)) - 1;
-			int day = Integer.parseInt(value.substring(8, 10));
-			int hour = Integer.parseInt(value.substring(11, 13));
-			int minute = Integer.parseInt(value.substring(14, 16));
-			int second = Integer.parseInt(value.substring(17, 19));
+		
+		int year = Integer.parseInt(value.substring(0, 4));
+		int month = Integer.parseInt(value.substring(5, 7));
+		int day = Integer.parseInt(value.substring(8, 10));
+		int hour = Integer.parseInt(value.substring(11, 13));
+		int minute = Integer.parseInt(value.substring(14, 16));
+		int second = Integer.parseInt(value.substring(17, 19));
 
-			output = new GregorianCalendar(year, month, day, hour, minute,
-					second);
-
-		} catch (Exception e) {
-			output = new GregorianCalendar(0, 0, 0, 0, 0, 0);
-			System.out.println("	Calendar Failed on killID:" + killId + " !");
-		}
-
-		return output;
+		return dataFactory.newXMLGregorianCalendar(year,month,day,hour,minute,second,0,0).toGregorianCalendar();
 	}
 
 }

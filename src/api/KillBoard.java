@@ -1,13 +1,13 @@
 package api;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 
-import org.xml.sax.InputSource;
-
+import unitTests.Stopwatch;
 import dataStructures.Kill;
 
 public class KillBoard {
@@ -15,9 +15,11 @@ public class KillBoard {
 	static String urlPartID = null;
 
 	public static ArrayList<Kill> getKillMails(int charID) {
-		InputSource data;
+		InputStream data;
 		ArrayList<Kill> downloaded = new ArrayList<Kill>();
 		ArrayList<Kill> totalBoard = new ArrayList<Kill>();
+		
+		Stopwatch t = new Stopwatch();
 
 		data = Download.getFromHTTPS(formURL(charID, 1));
 		downloaded = XMLParser.Killboard(data);
@@ -25,7 +27,7 @@ public class KillBoard {
 		totalBoard.addAll(downloaded);
 		int currentPage = 1;
 
-		while (downloaded.size() >= 200 && totalBoard.size() < 3000) {
+		while (downloaded.size() >= 200 && totalBoard.size() < 10000) {
 			currentPage++;
 			data = Download.getFromHTTPS(formURL(charID, currentPage));
 			downloaded = XMLParser.Killboard(data);
@@ -33,16 +35,18 @@ public class KillBoard {
 			System.out.println(totalBoard.size()
 					+ " is the current number of downloaded kills.");
 		}
+		
+		System.out.println("Done in " + t.elapsedTime() + "s.");
 
 		return totalBoard;
 	}
 
 	public static ArrayList<Kill> getKillMailsFromFile(String filename) {
-		InputSource data = null;
+		InputStream data = null;
 
 		try {
-			data = new InputSource(new InputStreamReader(new FileInputStream(
-					new File(filename))));
+			data = new BufferedInputStream(new FileInputStream(
+					new File(filename)));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,7 +59,7 @@ public class KillBoard {
 	private static String formURL(int ID, int page) {
 		String urlPartPage;
 		String urlPartOptions = "no-items/xml/";
-
+		
 		String urlStart = "https://zkillboard.com/api/";
 		if (urlPartID == null || !urlPartID.contains(String.valueOf(ID))) {
 			if (api.Eve.isCorporationID(ID)) {

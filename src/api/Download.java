@@ -1,9 +1,13 @@
 package api;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.zip.DeflaterInputStream;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -12,72 +16,72 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.xml.sax.InputSource;
-
 public class Download {
 
-	public static InputSource getFromHTTPS(String adresse){
+	public static InputStream getFromHTTPS(String adresse){
 		
-		//String result = "";
 		URL url = null;
 		
-		System.out.println("downloading...");
+		System.out.println("downloading from: "+adresse);
 		
 		try{
+			url = new URL(adresse);
 			disableCertificateValidation();
-			url = new URL(adresse.replace(" ", "%20"));
 			HttpsURLConnection client = (HttpsURLConnection) url.openConnection();
+			client.setRequestMethod("GET");
 			client.setRequestProperty("User-Agent", "Xenos");
 			client.setRequestProperty("Accept-Encoding", "gzip, deflate");
-			client.setRequestProperty("Accept", "application/xml");
+			client.setRequestProperty("Connection", "close");
+			//client.setRequestProperty("Accept", "application/xml");
+
+			InputStream instream = client.getInputStream();
+			if (client.getContentEncoding() != null && client.getContentEncoding().equalsIgnoreCase("gzip")) {
+				System.out.println("Found Gzip Stream");
+			    instream = new GZIPInputStream(instream);
+			} else if (client.getContentEncoding() != null && client.getContentEncoding().equalsIgnoreCase("deflate")){
+				System.out.println("Found Deflate Stream");
+			    instream = new DeflaterInputStream(instream);
+			}
 			
-			client.setRequestMethod("GET");
 			
-			//String line;
-			//BufferedReader rd = new BufferedReader( new InputStreamReader(client.getInputStream()));
 			
-			return new InputSource(client.getURL().openStream());
-			
-			//while ((line = rd.readLine()) != null){
-			//	result += line;
-			//}
+			return instream;
+
 		} catch (Exception e){
 			e.printStackTrace();  //TODO: ignore 500 errors
 			return null;
 		}
-		
-		//System.out.println("downloaded");
 	}
-	public static InputSource getFromHTTP(String adresse){
+	public static InputStream getFromHTTP(String adresse){
 		
-		//String result = "";
 		URL url = null;
 		
-		System.out.println("downloading...");
+		System.out.println("downloading from: "+adresse);
 		
 		try{
-			url = new URL(adresse.replace(" ", "%20"));
+			url = new URL(adresse);
 			HttpURLConnection client = (HttpURLConnection) url.openConnection();
+			client.setRequestMethod("GET");
 			client.setRequestProperty("User-Agent", "Xenos");
 			client.setRequestProperty("Accept-Encoding", "gzip, deflate");
-			client.setRequestProperty("Accept", "application/xml");
+			client.setRequestProperty("Connection", "close");
+			//client.setRequestProperty("Accept", "application/xml");
+
+			InputStream instream = client.getInputStream();
+			if (client.getContentEncoding() != null && client.getContentEncoding().equalsIgnoreCase("gzip")) {
+				System.out.println("Found Gzip Stream");
+			    instream = new GZIPInputStream(instream);
+			} else if (client.getContentEncoding() != null && client.getContentEncoding().equalsIgnoreCase("deflate")){
+				System.out.println("Found Deflate Stream");
+			    instream = new DeflaterInputStream(instream);
+			}
 			
-			client.setRequestMethod("GET");
-			
-			//String line;
-			//BufferedReader rd = new BufferedReader( new InputStreamReader(client.getInputStream()));
-			
-			return new InputSource(client.getURL().openStream());
-			
-			//while ((line = rd.readLine()) != null){
-			//	result += line;
-			//}
-		} catch (Exception e){
+			return instream;
+
+		} catch (IOException e){
 			e.printStackTrace();
 			return null;
 		}
-		
-		//System.out.println("downloaded");
 	}
 	
 	private static void disableCertificateValidation() {
@@ -98,11 +102,11 @@ public class Download {
 
 		  // Install the all-trusting trust manager
 		  try {
-		    SSLContext sc = SSLContext.getInstance("SSL");
-		    sc.init(null, trustAllCerts, new SecureRandom());
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts, new SecureRandom());
 		    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 		    HttpsURLConnection.setDefaultHostnameVerifier(hv);
 		  } catch (Exception e) {}
-		}
+	}
 
 }
